@@ -6,6 +6,8 @@ const contentful = require('contentful');
 const cors = require('cors');
 const isSameDay = require('date-fns/isSameDay');
 
+console.log(process.env);
+
 var client = contentful.createClient({
   accessToken: process.env.CONTENTFUL_ACCESS_TOKEN,
   space: process.env.CONTENTFUL_SPACE_ID,
