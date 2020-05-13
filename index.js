@@ -6,8 +6,6 @@ const contentful = require('contentful');
 const cors = require('cors');
 const isSameDay = require('date-fns/isSameDay');
 
-console.log(process.env);
-
 var client = contentful.createClient({
   accessToken: process.env.CONTENTFUL_ACCESS_TOKEN,
   space: process.env.CONTENTFUL_SPACE_ID,
@@ -34,7 +32,7 @@ app.get('/schedule', (req, res) => {
       res.json({
         start: today.fields.start,
         patterns: today.fields.items.map(item => ({
-          id: item.fields.externalId,
+          id: item.fields.pattern.fields.externalId,
           duration: item.fields.duration,
         })),
       });
