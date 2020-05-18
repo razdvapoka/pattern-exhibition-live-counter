@@ -26,16 +26,27 @@ app.get('/schedule', (req, res) => {
       include: 6,
     })
     .then(entries => {
-      const today = entries.items.find(entry =>
-        isSameDay(new Date(entry.fields.start), new Date()),
-      );
-      res.json({
-        start: today.fields.start,
-        patterns: today.fields.items.map(item => ({
+      const today = entries.items.find(entry => {
+        return isSameDay(new Date(entry.fields.start), new Date());
+      });
+      const items = today.fields.items
+        .filter(
+          item =>
+            item.sys.type === 'Entry' &&
+            item.fields.pattern &&
+            item.fields.pattern.fields,
+        )
+        .map(item => ({
           id: item.fields.pattern.fields.externalId,
           duration: item.fields.duration,
-        })),
-      });
+        }));
+
+      const data = {
+        start: today.fields.start,
+        patterns: items,
+      };
+      console.log('DATA:', data);
+      res.json(data);
     })
     .catch(err => {
       res.json(err);
